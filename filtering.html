@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Filtering</title>
+    <script src="jquery-3.7.1.js"></script>
+    <style>
+      .highlight {
+        background: yellowgreen;
+      }
+    </style>
+  </head>
+  <body>
+
+    <!-- Show Notification -->
+    <div class="container mt-5">
+      <button id="triggerEvent" class="btn btn-warning">
+        Show Notification
+      </button>
+      <div id="notification" style="display: none">New Notification</div>
+    </div>
+
+    <br /><br />
+
+    <!-- Price Filtering -->
+    <div class="container">
+      <input type="number" id="minPrice" placeholder="Minimum Price" />
+      <input type="number" id="maxPrice" placeholder="Maximum Price" />
+      <button class="success" id="filter">Filter</button>
+
+      <ul id="items">
+        <li data-price="50">PHP 50</li>
+        <li data-price="100">PHP 100</li>
+        <li data-price="120">PHP 120</li>
+        <li data-price="150">PHP 150</li>
+        <li data-price="200">PHP 200</li>
+      </ul>
+    </div>
+
+    <br />
+
+    <!-- Search Filtering -->
+    <div class="container mt-5">
+      <input type="text" id="search" placeholder="Search here..." />
+      <ul id="itemList">
+        <li>Banana</li>
+        <li>Pineapple</li>
+        <li>Grapes</li>
+        <li>Orange</li>
+        <li>Avocado</li>
+      </ul>
+    </div>
+
+    <!-- Date Filtering -->
+    <div class="container">
+      <input type="date" id="filterDate" />
+      <ul id="dateList">
+        <li data-date="2025-03-01">March 01, 2025</li>
+        <li data-date="2025-03-02">March 02, 2025</li>
+        <li data-date="2025-03-03">March 03, 2025</li>
+        <li data-date="2025-03-04">March 04, 2025</li>
+        <li data-date="2025-03-05">March 05, 2025</li>
+      </ul>
+    </div>
+
+    <br />
+
+    <!-- Highlight Even Numbers -->
+    <div class="container">
+      <button id="highlightEven">Highlight Even Numbers</button>
+      <ul id="numbers">
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+        <li>4</li>
+        <li>5</li>
+        <li>6</li>
+      </ul>
+    </div>
+
+    <br />
+
+    <!-- Special Product Filtering -->
+    <div class="container">
+      <button id="filterProduct">Show only special product</button>
+      <ul id="productList">
+        <li>Mango</li>
+        <li class="special">Banana</li>
+        <li>Orange</li>
+        <li class="special">Dragonfruit</li>
+      </ul>
+    </div>
+
+    <script>
+      $(document).ready(function () {
+        // Show Notification
+        $(document).on("showNotification", function (event, data) {
+          $("#notification").text(data.message).fadeIn();
+          setTimeout(() => {
+            $("#notification").fadeOut();
+          }, 3000);
+        });
+
+        $("#triggerEvent").on("click", function () {
+          $(document).trigger("showNotification", {
+            message: "New notification",
+          });
+        });
+
+        // Price Filtering
+        $("#filter").click(function () {
+          var minPrice = parseInt($("#minPrice").val()) || 0;
+          var maxPrice = parseInt($("#maxPrice").val()) || Infinity;
+
+          $("#items li").each(function () {
+            var price = parseInt($(this).data("price"));
+            $(this).toggle(price >= minPrice && price <= maxPrice);
+          });
+        });
+
+        // Search Filtering
+        $("#search").on("keyup", function () {
+          var searchText = $(this).val().toLowerCase();
+          $("#itemList li").each(function () {
+            $(this).toggle($(this).text().toLowerCase().includes(searchText));
+          });
+        });
+
+        // Date Filtering
+        $("#filterDate").on("change", function () {
+          var selectedDate = $(this).val();
+          $("#dateList li").each(function () {
+            var listItemDate = $(this).data("date");
+            $(this).toggle(listItemDate === selectedDate);
+          });
+        });
+
+        // Highlight Even Numbers
+        $("#highlightEven").click(function () {
+          $("#numbers li").removeClass("highlight");
+          $("#numbers li:nth-child(even)").addClass("highlight");
+        });
+
+        // Special Product Filtering
+        $("#filterProduct").click(function () {
+          $("#productList li").each(function () {
+            $(this).toggle($(this).hasClass("special"));
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
