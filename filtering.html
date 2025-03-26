@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>JQuery Filtering</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- <script src="public/jquery-3.7.1.js"></script> -->
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="public/jquery-3.7.1.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script> -->
     <link rel="icon" href="icon/filter.png">
 </head>
 <body class="bg-gray-600 p-6">
@@ -69,6 +69,17 @@
                 <li class="border border-gray-600 p-2 rounded special">Dragonfruit</li>
             </ul>
         </div>
+
+        <!-- Filter Even Number -->
+        <div class="mb-6">
+            <button class="bg-blue-500 text-white px-4 py-2 rounded-lg" id="filterEven">Filter Even Number</button>
+            <ul id="even-num" class="mt-3 space-y-2">
+                <li data-number="1" class="border border-gray-600 p-2 rounded">1</li>
+                <li data-number="2" class="border border-gray-600 p-2 rounded">2</li>
+                <li data-number="3" class="border border-gray-600 p-2 rounded">3</li>
+                <li data-number="4" class="border border-gray-600 p-2 rounded">4</li>
+            </ul>
+        </div>
     </div>
 
     <script>
@@ -108,6 +119,13 @@
             $("#filterProduct").click(function () {
                 $("#productList li").each(function () {
                     $(this).toggle($(this).hasClass("special"));
+                });
+            });
+
+            $("#filterEven").click(function () {
+                $('#even-num li').each(function () {
+                    var number = $(this).data('number');
+                    $(this).toggle(number % 2 === 0);
                 });
             });
         });
